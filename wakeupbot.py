@@ -1,5 +1,4 @@
-# This bot is a result of a tutorial covered on http://shellium.org/wiki.\n
-# Importiere die socket libary
+# Libary Import
 import socket
 import urllib
 import time
@@ -8,21 +7,21 @@ import time
 # bot config      
 server =  # Server
 channel = # Channel
-botnick = # Your bots nick
+botnick = # Botnickname
  
-def ping(): # This is our first function! It will respond to server Pings.
+def ping(): # Ping/Pong damit der bot nicht gekickt wird
   ircsock.send("PONG :pingis\n")  
  
-def sendmsg(chan , msg): # Eine Funktion um zb eine Nachricht zu senden
+def sendmsg(chan , msg): # Funktion Nachrichtsenden
   ircsock.send("PRIVMSG "+ chan +" :"+ msg +"\n")
  
 def joinchan(chan): # Funktion zum channel beitritt
   ircsock.send("JOIN "+ chan +"\n")
  
-def hallo(): # This function responds to a user that inputs "Hello Mybot"
+def hallo(): # Funktion welche Hello sendet
   ircsock.send("PRIVMSG "+ channel +" :Hello!\n")
   
-def wakeup():
+def wakeup(): #Funktion zum aufrufen einer url (zb für musikplay)
 	urllib.urlopen('*Here URL for Musik launch*')
                  
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -40,8 +39,8 @@ while 1: # Vorsicht damit evt endlos schleife
   if ircmsg.find(":Hallo "+ botnick) != -1: # Ruft die Funktion Hallo auf wenn jemand Hallo botnick schreibt
     hallo()
     
-  if ircmsg.find(":!wakeup") != -1: # Ruft die Funktion Hallo auf wenn jemand Hallo botnick schreibt
+  if ircmsg.find(":!wakeup") != -1: # Ruft die Funktion wakeup auf wenn jemand !wakeup schreibt
     wakeup()
     
-  if ircmsg.find("PING :") != -1: # if the server pings us then we've got to respond!
+  if ircmsg.find("PING :") != -1: # Ruft die Funktion ping auf um dem server zu antworten
     ping()
