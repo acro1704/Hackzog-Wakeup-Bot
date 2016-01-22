@@ -20,8 +20,8 @@ def sendmsg(chan , msg): # Funktion Nachricht senden
 def joinchan(chan): # Funktion zum channel beitritt
   ircsock.send("JOIN "+ chan +"\n")
  
-def hallo(): # Funktion welche Hello sendet
-  ircsock.send("PRIVMSG "+ channel +" :Hello!\n")
+#def hallo(): # Funktion welche Hello sendet
+#  ircsock.send("PRIVMSG "+ channel +" :Hello!\n")
   
 def wakeup():
 	#starte sound vom Soundboard
@@ -45,8 +45,8 @@ while 1: # Vorsicht damit evt endlos schleife
   ircmsg = ircmsg.strip('\n\r') # loesche leerzeilen
   print(ircmsg) # ausgeben was vom server kommt
  
-  if ircmsg.find(":Hallo "+ botnick) != -1: # Ruft die Funktion Hallo auf wenn jemand Hallo botnick schreibt
-    hallo()
+  #if ircmsg.find(":Hallo "+ botnick) != -1: # Ruft die Funktion Hallo auf wenn jemand Hallo botnick schreibt
+  #  hallo()
     
   if ircmsg.find(":!wakeup") != -1: # Ruft die Funktion wakeup auf wenn jemand !wakeup schreibt
 		wakeup()
