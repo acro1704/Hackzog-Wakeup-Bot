@@ -20,10 +20,10 @@ def hallo(): # Funktion welche Hello sendet
   
 def wakeup():
 		#starte sound vom Soundboard
-		urllib.urlopen('http://hackzog/frickelboard.php?play=wakeup.mp3')
+		urllib.urlopen('link to soundboard')
 		#sleep und wiederholung falls Boxen aus
 		time.sleep(10)
-		urllib.urlopen('http://hackzog/frickelboard.php?play=wakeup.mp3')
+		urllib.urlopen('link to soundboard')
 
 def connect():
 	global ircsock
