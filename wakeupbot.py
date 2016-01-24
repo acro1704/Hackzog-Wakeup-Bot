@@ -3,11 +3,17 @@ import socket
 import urllib
 import time
 import sys
+import random, string
+
+def randomword(length):
+   return ''.join(random.choice(string.lowercase) for i in range(length))
  
 # bot config      
-server = "irc.server" # Server
-channel = "#Channel" # Channel
-botnick = "BotNickName" # Botnickname
+server = # Server
+channel = # Channel
+botnick1= #Name
+botnick2 = randomword(5)
+botnick= botnick1+botnick2	# Botnickname
   
 def sendmsg(chan , msg): # Funktion Nachricht senden
   ircsock.send("PRIVMSG "+ chan +" :"+ msg +"\n")
@@ -20,10 +26,10 @@ def hallo(): # Funktion welche Hello sendet
   
 def wakeup():
 		#starte sound vom Soundboard
-		urllib.urlopen('link to soundboard')
+		urllib.urlopen(#was aufgerufen werden soll)
 		#sleep und wiederholung falls Boxen aus
 		time.sleep(10)
-		urllib.urlopen('link to soundboard')
+		urllib.urlopen(#was aufgerufen werden soll)
 
 def connect():
 	global ircsock
@@ -41,7 +47,7 @@ while 1: # Vorsicht damit evt endlos schleife
 			ircmsg = ircsock.recv(4096) 
 			ircmsg = ircmsg.strip('\n\r') 
 			print(ircmsg) 	
-			
+			print("jetzt")
 			if ircmsg.find(":Hallo "+ botnick) != -1: # Ruft die Funktion Hallo auf wenn jemand Hallo botnick schreibt
 				hallo()
 
