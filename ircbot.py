@@ -17,7 +17,7 @@ while 1:
 			x = 0
 	else:
 		print hostname, 'is down!'
-		subp.kill()
-		time.sleep(30)
-		x = 1
+		if x == 0:
+			subp.kill()
+			x = 1
 	time.sleep(10)	
