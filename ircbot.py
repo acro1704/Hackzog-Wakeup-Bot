@@ -2,6 +2,8 @@ import os
 import time
 import subprocess
 
+#Just a bad try to fix the disconnect problem
+
 #Testing the internet and kill the bot if connection is down and start when up
 
 hostname = "www.google.de" #example
