@@ -5,15 +5,13 @@ import time
 import sys
 import random, string
 
-def randomword(length):
-   return ''.join(random.choice(string.lowercase) for i in range(length))
+last_ping = time.time()
+threshold = 5 * 60 # five minutes, make this whatever you want
  
 # bot config      
 server = # Server
 channel = # Channel
-botnick1= #Name
-botnick2 = randomword(5)
-botnick= botnick1+botnick2	# Botnickname
+botnick= # Botnickname
   
 def sendmsg(chan , msg): # Funktion Nachricht senden
   ircsock.send("PRIVMSG "+ chan +" :"+ msg +"\n")
@@ -45,6 +43,18 @@ connect()
 while 1: # Vorsicht damit evt endlos schleife 
 		try:	
 			ircmsg = ircsock.recv(4096) 
+			
+			if ircmsg.find ( 'Nickname is already in use' ) != -1:
+        			botnick = botnick + str(time.time())
+        			connect()
+
+			if len(ircmsg) == 0:
+				print "Disconnected!"
+        			connect()
+			
+			if (time.time() - last_ping) > threshold:
+        			break
+			
 			ircmsg = ircmsg.strip('\n\r') 
 			print(ircmsg) 	
 			print("jetzt")
