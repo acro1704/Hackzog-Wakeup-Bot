@@ -18,15 +18,19 @@ def sendmsg(chan , msg): # Funktion Nachricht senden
  
 def joinchan(chan): # Funktion zum channel beitritt
   ircsock.send("JOIN "+ chan +"\n")
+
+def ledstart():
+	#a script to blink led lights in space
  
-def hallo(): # Funktion welche Hello sendet
-  ircsock.send("PRIVMSG "+ channel +" :Hello!\n")
+def led(): # Funktion welche Hello sendet
+  ledstart()
   
 def wakeup():
 		#starte sound vom Soundboard
 		urllib.urlopen(#was aufgerufen werden soll)
 		#sleep und wiederholung falls Boxen aus
 		time.sleep(10)
+		ledstart()
 		urllib.urlopen(#was aufgerufen werden soll)
 
 def connect():
@@ -35,31 +39,38 @@ def connect():
 	ircsock.connect((server, 6667)) # Zum server verbinden mit dem port: 6667
 	ircsock.send("USER guest 0 * :test\n") # bot initialisieren
 	ircsock.send("NICK "+ botnick +"\n") # dem bot einen nick geben
-	joinchan(channel) # den channel beitreten  	
+	joinchan(channel) # den channel beitreten 
+	ircsock.settimeout(300) # Timeout if connection get lost
 	
-ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)	
-connect()
+ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #open the socket	
+connect() # connect function start
 
-while 1: # Vorsicht damit evt endlos schleife 
+while 1: # Main While loop 
 		try:	
-			ircmsg = ircsock.recv(4096) 
-			
+			ircmsg = ircsock.recv(4096) #read a buffer of 4096 letters
+			ircmsg = ircmsg.strip('\n\r')
+						
+			# If nickname is in use
 			if ircmsg.find ( 'Nickname is already in use' ) != -1:
         			botnick = botnick + str(time.time())
         			connect()
-
+			
+			#If ircmsg doesent recive something (maybe offline)
 			if len(ircmsg) == 0:
 				print "Disconnected!"
-        			connect()
+        			connect() # reconnect
 			
+			#Another "offline-check"
 			if (time.time() - last_ping) > threshold:
         			break
 			
-			ircmsg = ircmsg.strip('\n\r') 
+			#some debug prints
 			print(ircmsg) 	
 			print("jetzt")
-			if ircmsg.find(":Hallo "+ botnick) != -1: # Ruft die Funktion Hallo auf wenn jemand Hallo botnick schreibt
-				hallo()
+			
+			
+			if ircmsg.find(":!led") != -1: # Ruft die Funktion led auf wenn jemand !led tippt
+				led()
 
 			if ircmsg.find(":!wakeup") != -1: # Ruft die Funktion wakeup auf wenn jemand !wakeup schreibt
 				wakeup()
@@ -67,7 +78,8 @@ while 1: # Vorsicht damit evt endlos schleife
 			if ircmsg.find ( 'PING' ) != -1: #Ping/Pong um nicht gekickt zu werden
 				ircsock.send ( 'PONG ' + ircmsg.split() [ 1 ] + '\r\n' )
 				print ( 'PONG ' + ircmsg.split() [ 1 ] + '\r\n' )
-				
+		
+		#except versuch gegen timouts und errors		
 		except socket.timeout:
 			print("Timeout")
 			connect()
