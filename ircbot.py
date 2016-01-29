@@ -63,10 +63,10 @@ while 1: # Vorsicht damit evt endlos schleife
 			 	
 			print("jetzt")
 			
-			if ircmsg.find(":!led") != -1: # Ruft die Funktion Hallo auf wenn jemand Hallo botnick schreibt
+			if ircmsg.find(":!led") != -1 & ircmsg.find("hackzog") == -1: # Ruft die Funktion Hallo auf wenn jemand Hallo botnick schreibt
 				LED()
 
-			if ircmsg.find(":!wakeup") != -1: # Ruft die Funktion wakeup auf wenn jemand !wakeup schreibt
+			if ircmsg.find(":!wakeup") != -1 & ircmsg.find("hackzog") == -1: # Ruft die Funktion wakeup auf wenn jemand !wakeup schreibt
 				wakeup()
 		
 			if ircmsg.find ( 'PING' ) != -1: #Ping/Pong um nicht gekickt zu werden
