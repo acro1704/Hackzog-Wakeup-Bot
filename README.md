@@ -8,5 +8,3 @@ A simple ircbot in python wich starts a sound when someone writes !wakeup
 - Start the bot with:   `python /path/to/bot.py`
 
 
-The "ircbot_process_handling_old.py" can be ignored
-
