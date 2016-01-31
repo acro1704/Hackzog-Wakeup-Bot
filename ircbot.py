@@ -4,25 +4,42 @@ import urllib
 import time
 import sys
 import random, string
-
+import os
+ 
 # bot config      
-server = server = # Server
-channel = # Channel
-botnick= # Botnickname
+server = server =  # Server
+channel =  # Channel
+botnick=  # Botnickname
   
+def tryconnect():
+	hostname = "www.google.de" #example
+	x=1
+
+	while x==1:
+		response = os.system("ping -c 1 " + hostname)
+		#and then check the response...
+		if response == 0:
+			if x == 1:
+				connect()
+				x = 0
+		time.sleep(10)	
+
 def sendmsg(chan , msg): # Funktion Nachricht senden
   ircsock.send("PRIVMSG "+ chan +" :"+ msg +"\n")
  
 def joinchan(chan): # Funktion zum channel beitritt
   ircsock.send("JOIN "+ chan +"\n")
  
+def hallo(): # Funktion welche Hello sendet
+  ircsock.send("PRIVMSG "+ channel +" :Hello!\n")
+  
 def LED():
-	#Some LED change stuff ask if you want kenw more about
+	#Managing the light for more info howto ask me
   
 def wakeup():
-		
+		print "test"
 		#Soundboard starte sound
-		urllib.urlopen('#Link zur Sound Steuerung')
+		urllib.urlopen('Link to start sound')
 	
 		#Sleep falls boxen aus
 		time.sleep(10)
@@ -31,7 +48,7 @@ def wakeup():
 		LED()
 	
 		#Erneut WakeUpSound
-		urllib.urlopen('#Link zur Sound Steuerung')
+		urllib.urlopen('Link to start sound')
 
 def connect():
 	global ircsock
@@ -45,7 +62,8 @@ ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ircsock.setblocking(0)
 connect()
 
-while 1: # Vorsicht damit evt endlos schleife 	
+while 1: # Vorsicht damit evt endlos schleife 
+	try:	
 			ircsock.settimeout(300)
 			ircmsg = ircsock.recv(1024)
 			ircsock.settimeout(None) 
@@ -53,15 +71,9 @@ while 1: # Vorsicht damit evt endlos schleife
 			if ircmsg.find ( 'Nickname is already in use' ) != -1:
         			botnick = botnick + str(time.time())
         			connect()
-
-			if len(ircmsg) == 0:
-				print "Disconnected!"
-        			connect()
 			
 			ircmsg = ircmsg.strip('\n\r') 
 			print(ircmsg)
-			 	
-			print("jetzt")
 			
 			if ircmsg.find(":!led") != -1 & ircmsg.find("hackzog") == -1: # Ruft die Funktion Hallo auf wenn jemand Hallo botnick schreibt
 				LED()
@@ -73,3 +85,7 @@ while 1: # Vorsicht damit evt endlos schleife
 				ircsock.send ( 'PONG ' + ircmsg.split() [ 1 ] + '\r\n' )
 				print ( 'PONG ' + ircmsg.split() [ 1 ] + '\r\n' )
 				last_ping = time.time()
+				
+	except socket.timeout:
+		print "timeout"
+		tryconnect()
