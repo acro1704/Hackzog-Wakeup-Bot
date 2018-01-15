@@ -7,9 +7,9 @@ import random, string
 import os
  
 # bot config      
-server = server =  # Server
-channel =  # Channel
-botnick=  # Botnickname
+server = "irc.freenode.net"
+channel = "#test"
+botnick=  "testbot12345"
   
 def tryconnect():
 	hostname = "www.google.de" #example
@@ -22,7 +22,7 @@ def tryconnect():
 			if x == 1:
 				connect()
 				x = 0
-		time.sleep(10)	
+		time.sleep(500)	
 
 def sendmsg(chan , msg): # Funktion Nachricht senden
   ircsock.send("PRIVMSG "+ chan +" :"+ msg +"\n")
@@ -33,22 +33,9 @@ def joinchan(chan): # Funktion zum channel beitritt
 def hallo(): # Funktion welche Hello sendet
   ircsock.send("PRIVMSG "+ channel +" :Hello!\n")
   
-def LED():
-	#Managing the light for more info howto ask me
-  
 def wakeup():
 		print "test"
-		#Soundboard starte sound
-		urllib.urlopen('Link to start sound')
-	
-		#Sleep falls boxen aus
-		time.sleep(10)
-		
-		#LED Flackern
-		LED()
-	
-		#Erneut WakeUpSound
-		urllib.urlopen('Link to start sound')
+		urllib.urlopen('sound.mp3')
 
 def connect():
 	global ircsock
@@ -75,11 +62,12 @@ while 1: # Vorsicht damit evt endlos schleife
 			ircmsg = ircmsg.strip('\n\r') 
 			print(ircmsg)
 			
-			if ircmsg.find(":!led") != -1 & ircmsg.find("hackzog") == -1: # Ruft die Funktion Hallo auf wenn jemand Hallo botnick schreibt
-				LED()
+			if ircmsg.find(":!hallo") != -1 & ircmsg.find("hackzog") == -1:
+				hallo()
 
-			if ircmsg.find(":!wakeup") != -1 & ircmsg.find("hackzog") == -1: # Ruft die Funktion wakeup auf wenn jemand !wakeup schreibt
+			if ircmsg.find(":!wakeup") != -1 & ircmsg.find("hackzog") == -1:
 				wakeup()
+				time.sleep(150)
 		
 			if ircmsg.find ( 'PING' ) != -1: #Ping/Pong um nicht gekickt zu werden
 				ircsock.send ( 'PONG ' + ircmsg.split() [ 1 ] + '\r\n' )
