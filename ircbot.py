@@ -9,7 +9,8 @@ import os
 # bot config      
 server = "irc.freenode.net"
 channel = "#test"
-botnick=  "testbot12345"
+botnick =  "testbot12345"
+sicherung = 0
   
 def tryconnect():
 	hostname = "www.google.de" #example
@@ -35,7 +36,7 @@ def hallo(): # Funktion welche Hello sendet
   
 def wakeup():
 		print "test"
-		urllib.urlopen('sound.mp3')
+		urllib.urlopen('test.mp3')
 
 def connect():
 	global ircsock
@@ -66,8 +67,13 @@ while 1: # Vorsicht damit evt endlos schleife
 				hallo()
 
 			if ircmsg.find(":!wakeup") != -1 & ircmsg.find("hackzog") == -1:
-				wakeup()
-				time.sleep(150)
+				if sicherung == 0:
+					wakeup()
+					sicherung = 1
+				else:
+					ircsock.send("PRIVMSG "+ channel +" :Einmal reicht doch du Schlingel!\n")
+					sicherung = 0
+				
 		
 			if ircmsg.find ( 'PING' ) != -1: #Ping/Pong um nicht gekickt zu werden
 				ircsock.send ( 'PONG ' + ircmsg.split() [ 1 ] + '\r\n' )
