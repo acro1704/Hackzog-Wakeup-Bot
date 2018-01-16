@@ -5,12 +5,15 @@ import time
 import sys
 import random, string
 import os
+import thread 
+from thread import start_new_thread
  
 # bot config      
 server = "irc.freenode.net"
 channel = "#test"
 botnick =  "testbot12345"
 sicherung = 0
+
   
 def tryconnect():
 	hostname = "www.google.de" #example
@@ -36,7 +39,7 @@ def hallo(): # Funktion welche Hello sendet
   
 def wakeup():
 		print "test"
-		urllib.urlopen('test.mp3')
+		#urllib.urlopen('link to start mp3 sound')
 
 def connect():
 	global ircsock
@@ -45,6 +48,8 @@ def connect():
 	ircsock.send("USER guest 0 * :test\n") # bot initialisieren
 	ircsock.send("NICK "+ botnick +"\n") # dem bot einen nick geben
 	joinchan(channel) # den channel beitreten  	
+
+
 	
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)	
 ircsock.setblocking(0)
@@ -52,6 +57,8 @@ connect()
 
 while 1: # Vorsicht damit evt endlos schleife 
 	try:	
+			print "schleife"
+			print sicherung
 			ircsock.settimeout(300)
 			ircmsg = ircsock.recv(1024)
 			ircsock.settimeout(None) 
@@ -72,13 +79,13 @@ while 1: # Vorsicht damit evt endlos schleife
 					sicherung = 1
 				else:
 					ircsock.send("PRIVMSG "+ channel +" :Einmal reicht doch du Schlingel!\n")
-					sicherung = 0
 				
 		
 			if ircmsg.find ( 'PING' ) != -1: #Ping/Pong um nicht gekickt zu werden
 				ircsock.send ( 'PONG ' + ircmsg.split() [ 1 ] + '\r\n' )
 				print ( 'PONG ' + ircmsg.split() [ 1 ] + '\r\n' )
 				last_ping = time.time()
+				sicherung = 0
 				
 	except socket.timeout:
 		print "timeout"
