@@ -18,7 +18,7 @@ server = "irc.freenode.net"
 channel = "#test"
 botnick =  "testbot12345"
 
-# Fetures
+# Features
 
 - If the bot has no Connection he tests the internetconnection every 5minutes. If he can reach the network he starts to go online again.
 - If the name of the bot ist already in use he start to set up his name with the timestamp at the end.
